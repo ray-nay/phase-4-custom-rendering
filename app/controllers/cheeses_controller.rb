@@ -3,13 +3,23 @@ class CheesesController < ApplicationController
   # GET /cheeses
   def index
     cheeses = Cheese.all
-    render json: cheeses
+    render json: cheeses,except: [:created_at, :update_at], methods: [:summary]
   end
 
   # GET /cheeses/:id
   def show
     cheese = Cheese.find_by(id: params[:id])
-    render json: cheese
+    if cheese
+      render json: cheese, except: [:created_at, :updated_at], methods: [:summary]
+    else
+      render json: { error: 'Cheese not found' }, status: :not_found
+    end
   end
-
 end
+
+
+# def index
+#   cheeses = Cheese.alld
+#   render json: cheeses, except: [:created_at, :update_at]
+# only: [:id, :name, :price, :is_best_seller]
+# end
